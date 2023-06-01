@@ -1,5 +1,6 @@
 package id.ac.unpas.functionalcompose.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +10,11 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -21,39 +26,44 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.benasher44.uuid.uuid4
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import id.ac.unpas.functionalcompose.ui.theme.Purple700
 import id.ac.unpas.functionalcompose.ui.theme.Teal200
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
 
 @Composable
-
-fun FormPencatatanSampahScreen(navController :
-                               NavHostController, id: String? = null, modifier: Modifier =
-                                   Modifier) {
+fun FormPencatatanSampahScreen(navController : NavHostController, id: String? = null, modifier: Modifier = Modifier) {
     val viewModel = hiltViewModel<PengelolaanSampahViewModel>()
-    val tanggal = remember{ mutableStateOf(TextFieldValue("")) }
+    val tanggal = remember { mutableStateOf(TextFieldValue("")) }
     val nama = remember { mutableStateOf(TextFieldValue("")) }
     val berat = remember { mutableStateOf(TextFieldValue("")) }
     val isLoading = remember { mutableStateOf(false) }
     val buttonLabel = if (isLoading.value) "Mohon tunggu..."
     else "Simpan"
+    val tanggalDialogState = rememberMaterialDialogState()
     val scope = rememberCoroutineScope()
     Column(modifier = modifier
         .fillMaxWidth()) {
         OutlinedTextField(
-            label = { Text(text = "Tanggal") },
+            label = { Text(text = "Tahun Keluar") },
             value = tanggal.value,
             onValueChange = {
                 tanggal.value = it
             },
             modifier = Modifier
                 .padding(4.dp)
-                .fillMaxWidth(),
-            placeholder = { Text(text = "yyyy-mm-dd") }
+                .fillMaxWidth()
+                .clickable {
+                    tanggalDialogState.show()
+                },
+            placeholder = { Text(text = "yyyy-mm-dd") },
+            enabled = false
         )
         OutlinedTextField(
-            label = { Text(text = "Nama") },
+            label = { Text(text = "Nama Kendaraan") },
             value = nama.value,
             onValueChange = {
                 nama.value = it
@@ -67,7 +77,7 @@ fun FormPencatatanSampahScreen(navController :
             placeholder = { Text(text = "XXXXX") }
         )
         OutlinedTextField(
-            label = { Text(text = "Berat") },
+            label = { Text(text = "Harga") },
             value = berat.value,
             onValueChange = {
                 berat.value = it
@@ -77,7 +87,7 @@ fun FormPencatatanSampahScreen(navController :
                 .fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType =
             KeyboardType.Decimal),
-            placeholder = { Text(text = "5") }
+            placeholder = { Text(text = "10.000.000") }
         )
         val loginButtonColors = ButtonDefaults.buttonColors(
             backgroundColor = Purple700,
@@ -142,6 +152,15 @@ fun FormPencatatanSampahScreen(navController :
                         TextFieldValue(setoranSampah.berat)
                 }
             }
+        }
+    }
+    MaterialDialog(dialogState = tanggalDialogState, buttons = {
+        positiveButton("OK")
+        negativeButton("Batal")
+    }) {
+        datepicker { date ->
+            tanggal.value =
+                TextFieldValue(date.format(DateTimeFormatter.ISO_LOCAL_DATE))
         }
     }
 }

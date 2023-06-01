@@ -137,14 +137,14 @@ fun MainScreen() {
                     SettingScreen()
                 }
                 composable("pengelolaan-sampah") {
-                    title.value = "Pengelolaan Sampah"
+                    title.value = "Pengelolaan Showroom"
                     PengelolaanSampahScreen(navController =
                     navController, snackbarHostState =
                     scaffoldState.snackbarHostState, modifier =
                     Modifier.padding(innerPadding))
                 }
                 composable("tambah-pengelolaan-sampah") {
-                    title.value = "Tambah Pengelolaan Sampah"
+                    title.value = "Tambah Pengelolaan Showroom"
                     FormPencatatanSampahScreen(navController =
                     navController, modifier = Modifier.padding(innerPadding))
                 }
@@ -154,7 +154,7 @@ fun MainScreen() {
                             type = NavType.StringType
                         }
                     )) { backStackEntry ->
-                    title.value = "Edit Pengelolaan Sampah"
+                    title.value = "Edit Pengelolaan Showroom"
                     val id =
                         backStackEntry.arguments?.getString("id")
                             ?: return@composable

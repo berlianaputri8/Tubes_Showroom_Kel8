@@ -46,34 +46,12 @@ fun PengelolaanSampahScreen(navController : NavHostController,
         }
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(items = items, itemContent = { item ->
-                Row(modifier = Modifier
-                    .padding(15.dp)
-                    .fillMaxWidth().clickable {
-                        navController.navigate("edit-pengelolaan-sampah/${item.id}")
-                    }) {
-                    Column(modifier = Modifier.weight(3f)) {
-                        Text(text = "Tanggal", fontSize = 14.sp)
-                        Text(
-                            text = item.tanggal, fontSize =
-                            16.sp, fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Column(modifier = Modifier.weight(3f)) {
-                        Text(text = "Nama", fontSize = 14.sp)
-                        Text(
-                            text = item.nama, fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Column(modifier = Modifier.weight(3f)) {
-                        Text(text = "Berat", fontSize = 14.sp)
-                        Text(
-                            text = "${item.berat} Kg", fontSize
-                            = 16.sp, fontWeight = FontWeight.Bold
-                        )
+                SetoranSampahItem(item = item, navController =
+                navController) {
+                    scope.launch {
+                        viewModel.delete(it)
                     }
                 }
-                Divider(modifier = Modifier.fillMaxWidth())
             })
         }
     }

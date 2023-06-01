@@ -20,5 +20,5 @@ interface SetoranSampahDao {
     @Delete
     fun delete(item: SetoranSampah)
     @Query("DELETE FROM SetoranSampah WHERE id = :id")
-    fun delete(id: String)
+    suspend fun delete(id: String)
 }
