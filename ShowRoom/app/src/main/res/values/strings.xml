@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ShowRoom</string>
+    <string name="home">Home</string>
+    <string name="mobil">Mobil</string>
+    <string name="motor">motor</string>
+    <string name="promo">Promo</string>
+</resources>
